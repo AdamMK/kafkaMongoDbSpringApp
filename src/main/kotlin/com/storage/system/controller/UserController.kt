@@ -41,14 +41,12 @@ class UserController(
     @GetMapping("user/{id}")
     fun getUser(@PathVariable id: Int): ResponseEntity<UserResponse> {
 
-        val userById = userRepository.findUserById(id)?.toUserView()
+        val userById = userRepository.findUserById(id).toUserView()
 
         logger.info { "User id: $id is $userById" }
 
-        return if (userById != null)
-            ResponseEntity.ok(userById)
-        else
-            ResponseEntity.notFound().build()
+        return ResponseEntity.ok(userById)
+
     }
 
     @PostMapping("/user" )
@@ -63,9 +61,9 @@ class UserController(
     }
 
     fun User.toUserView() = UserResponse(
-        id = userId,
-        name = userName,
-        email = userEmail
+        id = id,
+        name = name,
+        email = email
     )
 
 }
